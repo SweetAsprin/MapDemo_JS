@@ -10,18 +10,20 @@
 <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
 <script type="text/javascript">
 
-  //程序入口
   var dom = document.getElementById('container');
   var myChart = echarts.init(dom, null, {
     renderer: 'canvas',
     useDirtyRect: false
   });
   var option;
+  var xizang = "西藏"
+  var mapName = xizang
+  var date = "8-20"
 
   //1.准备地图/图片资源
   var RED_ICON = "image://asset/point_black.png";
   var YELLOW_ICON = "image://asset/point_blue.png";
-  var map_title = '各地区新增感染病例数量';
+  var map_title = "";
   var jsonMapData = {
     西藏: 'asset/xizang.json',
     拉萨市: 'asset/lasa.json',
@@ -32,15 +34,15 @@
     日喀则市: 'asset/rikaze.json',
     昌都市: 'asset/changdu.json',
   };
-  var RED = "RED";
-  var YELLOW = "YELLOW";
+  var RED = "red";
+  var YELLOW = "yellow";
 
   function getRandomValue(mapName) {
     return Math.floor(Math.random() * 100 + 1);
   }
-
+  var pointJsonData = {};
   //2.准备病例数据
-  var totalData = [
+  var countJsonData = [
     {
       name: '西藏',
       subData: [
@@ -157,135 +159,6 @@
     },
   ];
 
-  //3.准备中高风险点位数据
-  var RED_POINT_ARRAY = [
-    {
-      name: '拉萨市',
-      subData: [
-        {
-          name: "城关区",
-          subData: [
-            {name: "城关区测试数据1", value: [91.134559, 29.661675]},
-          ],
-        },
-        {
-          name: "当雄县",
-          subData: [
-            {name: "当雄县测试数据1", value: [91.0042333, 30.4327550]},
-          ],
-        },
-        {
-          name: "林周县",
-          subData: [
-            {name: "林周县测试数据1", value: [91.242930,29.778634, ]},
-          ],
-        },
-        {
-          name: "墨竹工卡县",
-          subData: [
-            {name: "墨竹工卡县测试数据1", value: [91.7101214,29.849919, ]},
-          ],
-        },
-        {
-          name: "堆龙德庆区",
-          subData: [
-            {name: "堆龙德庆区测试数据1", value: [90.63125892,29.667235, ]},
-          ],
-        },
-        {
-          name: "尼木县",
-          subData: [
-            {name: "尼木县测试数据1", value: [90.0749659,29.4235283, ]},
-          ],
-        },
-        {
-          name: "达孜区",
-          subData: [
-            {name: "达孜区测试数据1", value: [ 91.28567,29.676020]},
-          ],
-        },
-        {
-          name: "曲水县",
-          subData: [
-            {name: "曲水县测试数据1", value: [90.7336162, 29.39367935]},
-          ],
-        },
-      ],
-    },
-    {
-      name: '林芝市',
-      subData: [
-        {
-          name: "波密县",
-          subData: [
-            {name: "测试数据1", value: [118.694419, 39.998285]},
-          ],
-        },
-        {
-          name: "工布江达县",
-          subData: [
-            {name: "测试数据1", value: [118.694419, 39.998285]},
-          ],
-        },
-        {
-          name: "巴宜区",
-          subData: [
-            {name: "测试数据1", value: [118.694419, 39.998285]},
-          ],
-        },
-        {
-          name: "米林县",
-          subData: [
-            {name: "测试数据1", value: [118.694419, 39.998285]},
-          ],
-        },
-        {
-          name: "墨脱县",
-          subData: [
-            {name: "测试数据1", value: [118.694419, 39.998285]},
-          ],
-        },
-        {
-          name: "朗县",
-          subData: [
-            {name: "测试数据1", value: [118.694419, 39.998285]},
-          ],
-        },
-        {
-          name: "察隅县",
-          subData: [
-            {name: "测试数据1", value: [118.694419, 39.998285]},
-          ],
-        },
-      ],
-    },
-  ];
-  var YELLOW_POINT_ARRAY = [
-    {
-      name: '拉萨市',
-      subData: [
-        {
-          name: "当雄县",
-          subData: [
-            {name: "当雄县测试数据2", value: [91.1042333, 30.2327550]},
-          ],
-        },
-        {
-          name: "林周县",
-          subData: [
-            {name: "林周县测试数据2", value: [91.442930,29.578634, ]},
-          ],
-        },
-        {
-          name: "曲水县",
-          subData: [
-            {name: "曲水县测试数据2", value: [90.2336162, 29.59367935]},
-          ],
-        },
-      ],
-    },
-  ];
-
   function calculateData(dataset) {
     let totalValue = 0;
     for (let data of dataset) {
@@ -306,7 +179,7 @@
     return totalValue;
   }
 
-  calculateData(totalData);
+  calculateData(countJsonData);
 
   //4.打印计算得出的结果
   function printData(dataset, prefix) {
@@ -323,7 +196,7 @@
   // 5.从传递进来的数据集里找到特定名称的数据并返回其subData
   function getSeriesData(name, dataset) {
     if (dataset === undefined) {
-      dataset = totalData;
+      dataset = countJsonData;
     }
     var subResult;
     for (let data of dataset) {
@@ -345,46 +218,45 @@
     return null;
   }
 
-  function getPointData(mapName, dataArray) {
-    console.log("当前查询点位地图：",mapName);
-    let final_arr = [];
-    if (mapName === "西藏") {
-      for (let dataCity of dataArray) {
-        if (dataCity.subData) {
-          for (let dataDistrict of dataCity.subData) {
-            if (dataDistrict.subData) {
-              final_arr = final_arr.concat(dataDistrict.subData)
-            }
+  function getPointDataArray(type) {
+    let pointArray = [];
+    let dataArray = pointJsonData[date][type];
+    if (mapName === xizang) {
+      for (let dataCity in dataArray) {
+        for (let district in dataArray[dataCity]) {
+          for (let point of dataArray[dataCity][district]) {
+            pointArray.push(point)
           }
         }
       }
     } else {
-      for (let dataCity of dataArray) {
-        if (mapName === dataCity.name) {
-          if (dataCity.subData) {
-            for (let dataDistrict of dataCity.subData) {
-              if (dataDistrict.subData) {
-                final_arr = final_arr.concat(dataDistrict.subData)
-              }
-            }
-          }
-        } else {
-          if (dataCity.subData) {
-            for (let dataDistrict of dataCity.subData) {
-              if (mapName === dataDistrict.name && dataDistrict.subData) {
-                final_arr = final_arr.concat(dataDistrict.subData)
-              }
+      for (let dataCity in dataArray) {
+        if (mapName === dataCity) {
+          for (let district in dataArray[dataCity]) {
+            for (let point of dataArray[dataCity][district]) {
+              pointArray.push(point)
             }
           }
         }
       }
     }
-    console.log("最终找到数据量：",final_arr.length);
-    return final_arr;
+
+    if (pointArray.length == 0) {
+      console.log("查询到结果为0：当前mapName=", mapName, " type=", type)
+    }
+    console.log(date, mapName, type, "最终找到数据量：", pointArray.length,);
+    //强制数据格式 {name: "测试数据", value: [91.134559, 29.661675]},
+    let mapPointDataArray = [];
+    for (const point of pointArray) {
+      mapPointDataArray.push({name: point.address, value: [point.lng, point.lat, point.poi_name, point.poi_address]})
+    }
+    return mapPointDataArray;
   }
 
 
-  function loadMap(mapName) {
+  function loadMap() {
+    dataSplited = date.split("-")
+    map_title = '各地区新增病例数量及中高风险区统计(' + dataSplited[0] + "月" + dataSplited[1] + "日)"
     console.log(`loadMap: ${mapName}`);
     var seriesData = getSeriesData(mapName);
     var jsonData = jsonMapData[mapName];
@@ -420,14 +292,13 @@
           trigger: 'item',
           formatter: function (params) {
             // console.log("option.tooltip.formatter： name=",params.name);
-            let desc = "";
             if (typeof params.value[1] == 'undefined') {
-              desc = params.name + ' : ' + params.value.toFixed(0);
+              return  params.name + ' : ' + params.value.toFixed(0) + "例";
+            } else {
+              //"</br>"
+              return "登记风险区名称：" + params.name + "</br>" + "poi点位名称：" + params.value[2] + "</br>" + "poi点位地址：" + params.value[3]
+                + "</br>" + "经度：" + params.value[0] + "</br>" +"纬度：" + params.value[1];
             }
-            else {
-              desc = params.name;
-            }
-            return desc + "</br>" + "测试";
           },
         },
         //各标记图例
@@ -470,7 +341,7 @@
             seriesIndex: 0,
             show: true,
             inRange: {
-              color: ["#FFFFFF","#FFECEC", "#FFD2D2", "#FFB5B5", "#FF9797", "#ff7575", "#FF5151", "#FF2D2D", "#FF0000", "#EA0000", "#CE0000", "#AE0000", "#930000", "#750000", "#600000", "#4D0000", "#2F0000",],
+              color: ["#FFFFFF", "#FFECEC", "#FFD2D2", "#FFB5B5", "#FF9797", "#ff7575", "#FF5151", "#FF2D2D", "#FF0000", "#EA0000", "#CE0000", "#AE0000", "#930000", "#750000", "#600000", "#4D0000", "#2F0000",],
             },
             formatter: function (value) {
               return value.toFixed(0);
@@ -555,7 +426,7 @@
             name: RED,
             type: 'scatter',
             coordinateSystem: 'geo',
-            data: getPointData(mapName, RED_POINT_ARRAY),
+            data: getPointDataArray(RED),
             symbol: RED_ICON,
             symbolSize: function (val) {//图标大小
               return 15;
@@ -586,7 +457,7 @@
             name: YELLOW,
             type: 'scatter',
             coordinateSystem: 'geo',
-            data: getPointData(mapName, YELLOW_POINT_ARRAY),
+            data: getPointDataArray(YELLOW),
             symbol: YELLOW_ICON,
             symbolSize: function (val) {
               return 20;
@@ -632,7 +503,8 @@
               icon:
                 'M1007.772025 142.969542l-70.419421 53.799178A527.751816 527.751816 0 0 0 524.288347 0.003938C234.733768 0.003938 0.396208 228.591367 0.002363 511.371818-0.391482 794.467344 234.497461 1024 524.288347 1024c226.381899 0 419.287003-140.208692 492.699643-336.579629a9.688578 9.688578 0 0 0-6.065207-12.603028l-70.892035-23.709447a10.082423 10.082423 0 0 0-12.603029 5.8289 416.687628 416.687628 0 0 1-99.406387 151.551418 431.181111 431.181111 0 0 1-303.496679 122.879527c-58.0527 0-114.214945-11.106419-166.990127-32.925412a427.085127 427.085127 0 0 1-228.587428-223.30991 408.653197 408.653197 0 0 1-33.713101-163.287988c0-56.713628 11.421495-111.536802 33.713101-163.209218a416.687628 416.687628 0 0 1 92.080877-133.355795 431.181111 431.181111 0 0 1 303.496678-122.879527c58.0527 0 114.214945 11.02765 167.068896 32.925412a427.085127 427.085127 0 0 1 171.243649 128.235814l-75.224326 57.265011a9.688578 9.688578 0 0 0 3.780909 17.250395l219.213926 52.381337c6.301514 1.49661 12.366722-3.150757 12.366722-9.373503l1.023996-220.552998c-0.157538-8.034431-9.767347-12.603028-16.2264-7.561817z',
               onclick: function () {
-                loadMap('西藏');
+                mapName = "西藏"
+                loadMap();
               },
             },
           },
@@ -648,7 +520,8 @@
     // 控制台打印数据的名称
     if (params.data) {
       console.log("点击地图区域，开始加载新地图", params.data.name);
-      loadMap(params.data.name);
+      mapName = params.data.name;
+      loadMap();
     }
   });
 
@@ -659,7 +532,11 @@
   }
 
   function initMap() {
-    loadMap('西藏');
+    $.getJSON("asset/totalData.json", null, function (data) {
+      pointJsonData = data
+      loadMap();
+      // console.log(pointJsonData)
+    });
   }
 
   initMap();
