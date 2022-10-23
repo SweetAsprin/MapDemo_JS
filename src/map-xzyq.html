@@ -358,7 +358,7 @@
               show: true, //是否显示城市名
               textStyle: {
                 color: '#006400', //非选中状态地图名称颜色
-                fontSize: 15,
+                fontSize: 10,
               },
               verticalAlign: 'middle',
               align: 'left',
@@ -370,7 +370,7 @@
               show: true,
               textStyle: {
                 color: '#4B0082', //选中状态地图名称颜色
-                fontSize: 20,
+                fontSize: 15,
               },
             },
           },
@@ -513,6 +513,13 @@
       };
       myChart.clear();
       myChart.setOption(option);
+      myChart.on("mouseover", function (params){
+        if(params.data.value != undefined){
+          myChart.dispatchAction({
+            type: 'downplay'
+          });
+        }
+      });
     });
   }
 
