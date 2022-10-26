@@ -4,7 +4,11 @@
 	<meta charset="utf-8">
 </head>
 <body style="height: 100%; margin: 0">
-<div id="container" style="height: 100%"></div>
+日期切换
+<select id="select_date">
+</select>
+<div id="container" style="height: 100%"/>
+</body>
 
 <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/jquery"></script>
 <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
@@ -18,7 +22,7 @@
   var option;
   var xizang = "西藏"
   var mapName = xizang
-  var date = "8-18"
+  var date = ""
 
   //1.准备地图/图片资源
   var RED_ICON = "image://asset/point_black.png";
@@ -146,8 +150,8 @@
     } else {
       maxValue = 1.2 * maxValue
     }
-    console.log("seriesData:", seriesData)
-    console.log("maxValue:", maxValue)
+    // console.log("seriesData:", seriesData)
+    // console.log("maxValue:", maxValue)
     if (mapJson === undefined) {
       console.log("找不到地图数据 for ", mapName)
       return;
@@ -425,8 +429,22 @@
   function initMap() {
     $.getJSON("asset/totalData.json", null, function (data) {
       totalJsonData = data
+      for (const dateKey in totalJsonData) {
+        let splited = dateKey.split("-");
+        let option = $("<option />");
+        option.html(splited[0] + "月" + splited[1] + "日");
+        option.val(dateKey);
+        $("#select_date").append(option);
+      }
+      //设置初始值
+      date = Object.keys(totalJsonData)[0]
+      //设置切换回调
+      $("#select_date").change(function () {
+        console.log("选中的日期：" + $(this).val());
+        date = $(this).val();
+        loadMap();
+      });
       loadMap();
-      // console.log(pointJsonData)
     });
   }
 
@@ -434,5 +452,4 @@
 
 
 </script>
-</body>
 </html>
