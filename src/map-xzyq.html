@@ -36,191 +36,198 @@
   };
   var RED = "red";
   var YELLOW = "yellow";
+  var totalJsonData = {};
 
-  function getRandomValue(mapName) {
-    return Math.floor(Math.random() * 100 + 1);
-  }
-  var pointJsonData = {};
-  //2.准备病例数据
-  var countJsonData = [
-    {
-      name: '西藏',
-      subData: [
-        {
-          name: '拉萨市',
-          subData: [
-            {name: '城关区', value: getRandomValue(name)},
-            {name: '当雄县', value: getRandomValue(name)},
-            {name: '林周县', value: getRandomValue(name)},
-            {name: '墨竹工卡县', value: getRandomValue(name)},
-            {name: '堆龙德庆区', value: getRandomValue(name)},
-            {name: '尼木县', value: getRandomValue(name)},
-            {name: '达孜区', value: getRandomValue(name)},
-            {name: '曲水县', value: getRandomValue(name)},
-          ]
-        },
-        {
-          name: '林芝市',
-          subData: [
-            {name: '波密县', value: getRandomValue(name)},
-            {name: '工布江达县', value: getRandomValue(name)},
-            {name: '巴宜区', value: getRandomValue(name)},
-            {name: '米林县', value: getRandomValue(name)},
-            {name: '墨脱县', value: getRandomValue(name)},
-            {name: '朗县', value: getRandomValue(name)},
-            {name: '察隅县', value: getRandomValue(name)},
-          ]
-        },
-        {
-          name: '山南市',
-          subData: [
-            {name: '桑日县', value: getRandomValue(name)},
-            {name: '加查县', value: getRandomValue(name)},
-            {name: '乃东区', value: getRandomValue(name)},
-            {name: '扎囊县', value: getRandomValue(name)},
-            {name: '贡嘎县', value: getRandomValue(name)},
-            {name: '浪卡子县', value: getRandomValue(name)},
-            {name: '曲松县', value: getRandomValue(name)},
-            {name: '琼结县', value: getRandomValue(name)},
-            {name: '措美县', value: getRandomValue(name)},
-            {name: '隆子县', value: getRandomValue(name)},
-            {name: '洛扎县', value: getRandomValue(name)},
-            {name: '错那县', value: getRandomValue(name)},
-          ]
-        },
-        {
-          name: '阿里地区',
-          subData: [
-            {name: '改则县', value: getRandomValue(name)},
-            {name: '札达县', value: getRandomValue(name)},
-            {name: '措勤县', value: getRandomValue(name)},
-            {name: '普兰县', value: getRandomValue(name)},
-            {name: '日土县', value: getRandomValue(name)},
-            {name: '噶尔县', value: getRandomValue(name)},
-            {name: '革吉县', value: getRandomValue(name)},
-          ]
-        },
-        {
-          name: '那曲市',
-          subData: [
-            {name: '安多县', value: getRandomValue(name)},
-            {name: '聂荣县', value: getRandomValue(name)},
-            {name: '巴青县', value: getRandomValue(name)},
-            {name: '申扎县', value: getRandomValue(name)},
-            {name: '班戈县', value: getRandomValue(name)},
-            {name: '索县', value: getRandomValue(name)},
-            {name: '比如县', value: getRandomValue(name)},
-            {name: '色尼区', value: getRandomValue(name)},
-            {name: '嘉黎县', value: getRandomValue(name)},
-            {name: '尼玛县', value: getRandomValue(name)},
-            {name: '双湖县', value: getRandomValue(name)},
-          ]
-        },
-        {
-          name: '日喀则市',
-          subData: [
-            {name: '仲巴县', value: 199.3},
-            {name: '昂仁县', value: 76.1},
-            {name: '谢通门县', value: 26.2},
-            {name: '南木林县', value: 26.2},
-            {name: '萨嘎县', value: 26.2},
-            {name: '桑珠孜区', value: 26.2},
-            {name: '拉孜县', value: 26.2},
-            {name: '仁布县', value: 26.2},
-            {name: '萨迦县', value: 26.2},
-            {name: '吉隆县', value: 26.2},
-            {name: '白朗县', value: 26.2},
-            {name: '江孜县', value: 26.2},
-            {name: '聂拉木县', value: 26.2},
-            {name: '定日县', value: 26.2},
-            {name: '康马县', value: 26.2},
-            {name: '岗巴县', value: 26.2},
-            {name: '定结县', value: 26.2},
-            {name: '亚东县', value: 26.2},
-          ]
-        },
-        {
-          name: '昌都市',
-          subData: [
-            {name: '江达县', value: 199.3},
-            {name: '丁青县', value: 76.1},
-            {name: '卡若区', value: 26.2},
-            {name: '类乌齐县', value: 26.2},
-            {name: '边坝县', value: 26.2},
-            {name: '贡觉县', value: 26.2},
-            {name: '洛隆县', value: 26.2},
-            {name: '察雅县', value: 26.2},
-            {name: '八宿县', value: 26.2},
-            {name: '左贡县', value: 26.2},
-            {name: '芒康县', value: 26.2},
-          ]
-        },
-      ],
-    },
-  ];
+  // function getRandomValue(mapName) {
+  //   return Math.floor(Math.random() * 100 + 1);
+  // }
 
-  function calculateData(dataset) {
-    let totalValue = 0;
-    for (let data of dataset) {
-      if (data.subData) {
-        let subValue = calculateData(data.subData);
-        if (subValue > 0) {
-          data.value = subValue;
-        } else {
-          data.value = 0;
-        }
-      }
-      if (data.value === undefined) {
-        data.value = 0;
-      } else if (data.value > 0) {
-        totalValue += data.value;
-      }
-    }
-    return totalValue;
-  }
+  // var countJsonData = [
+  //   {
+  //     name: '西藏',
+  //     subData: [
+  //       {
+  //         name: '拉萨市',
+  //         subData: [
+  //           {name: '城关区', value: getRandomValue(name)},
+  //           {name: '当雄县', value: getRandomValue(name)},
+  //           {name: '林周县', value: getRandomValue(name)},
+  //           {name: '墨竹工卡县', value: getRandomValue(name)},
+  //           {name: '堆龙德庆区', value: getRandomValue(name)},
+  //           {name: '尼木县', value: getRandomValue(name)},
+  //           {name: '达孜区', value: getRandomValue(name)},
+  //           {name: '曲水县', value: getRandomValue(name)},
+  //         ]
+  //       },
+  //       {
+  //         name: '林芝市',
+  //         subData: [
+  //           {name: '波密县', value: getRandomValue(name)},
+  //           {name: '工布江达县', value: getRandomValue(name)},
+  //           {name: '巴宜区', value: getRandomValue(name)},
+  //           {name: '米林县', value: getRandomValue(name)},
+  //           {name: '墨脱县', value: getRandomValue(name)},
+  //           {name: '朗县', value: getRandomValue(name)},
+  //           {name: '察隅县', value: getRandomValue(name)},
+  //         ]
+  //       },
+  //       {
+  //         name: '山南市',
+  //         subData: [
+  //           {name: '桑日县', value: getRandomValue(name)},
+  //           {name: '加查县', value: getRandomValue(name)},
+  //           {name: '乃东区', value: getRandomValue(name)},
+  //           {name: '扎囊县', value: getRandomValue(name)},
+  //           {name: '贡嘎县', value: getRandomValue(name)},
+  //           {name: '浪卡子县', value: getRandomValue(name)},
+  //           {name: '曲松县', value: getRandomValue(name)},
+  //           {name: '琼结县', value: getRandomValue(name)},
+  //           {name: '措美县', value: getRandomValue(name)},
+  //           {name: '隆子县', value: getRandomValue(name)},
+  //           {name: '洛扎县', value: getRandomValue(name)},
+  //           {name: '错那县', value: getRandomValue(name)},
+  //         ]
+  //       },
+  //       {
+  //         name: '阿里地区',
+  //         subData: [
+  //           {name: '改则县', value: getRandomValue(name)},
+  //           {name: '札达县', value: getRandomValue(name)},
+  //           {name: '措勤县', value: getRandomValue(name)},
+  //           {name: '普兰县', value: getRandomValue(name)},
+  //           {name: '日土县', value: getRandomValue(name)},
+  //           {name: '噶尔县', value: getRandomValue(name)},
+  //           {name: '革吉县', value: getRandomValue(name)},
+  //         ]
+  //       },
+  //       {
+  //         name: '那曲市',
+  //         subData: [
+  //           {name: '安多县', value: getRandomValue(name)},
+  //           {name: '聂荣县', value: getRandomValue(name)},
+  //           {name: '巴青县', value: getRandomValue(name)},
+  //           {name: '申扎县', value: getRandomValue(name)},
+  //           {name: '班戈县', value: getRandomValue(name)},
+  //           {name: '索县', value: getRandomValue(name)},
+  //           {name: '比如县', value: getRandomValue(name)},
+  //           {name: '色尼区', value: getRandomValue(name)},
+  //           {name: '嘉黎县', value: getRandomValue(name)},
+  //           {name: '尼玛县', value: getRandomValue(name)},
+  //           {name: '双湖县', value: getRandomValue(name)},
+  //         ]
+  //       },
+  //       {
+  //         name: '日喀则市',
+  //         subData: [
+  //           {name: '仲巴县', value: 199.3},
+  //           {name: '昂仁县', value: 76.1},
+  //           {name: '谢通门县', value: 26.2},
+  //           {name: '南木林县', value: 26.2},
+  //           {name: '萨嘎县', value: 26.2},
+  //           {name: '桑珠孜区', value: 26.2},
+  //           {name: '拉孜县', value: 26.2},
+  //           {name: '仁布县', value: 26.2},
+  //           {name: '萨迦县', value: 26.2},
+  //           {name: '吉隆县', value: 26.2},
+  //           {name: '白朗县', value: 26.2},
+  //           {name: '江孜县', value: 26.2},
+  //           {name: '聂拉木县', value: 26.2},
+  //           {name: '定日县', value: 26.2},
+  //           {name: '康马县', value: 26.2},
+  //           {name: '岗巴县', value: 26.2},
+  //           {name: '定结县', value: 26.2},
+  //           {name: '亚东县', value: 26.2},
+  //         ]
+  //       },
+  //       {
+  //         name: '昌都市',
+  //         subData: [
+  //           {name: '江达县', value: 199.3},
+  //           {name: '丁青县', value: 76.1},
+  //           {name: '卡若区', value: 26.2},
+  //           {name: '类乌齐县', value: 26.2},
+  //           {name: '边坝县', value: 26.2},
+  //           {name: '贡觉县', value: 26.2},
+  //           {name: '洛隆县', value: 26.2},
+  //           {name: '察雅县', value: 26.2},
+  //           {name: '八宿县', value: 26.2},
+  //           {name: '左贡县', value: 26.2},
+  //           {name: '芒康县', value: 26.2},
+  //         ]
+  //       },
+  //     ],
+  //   },
+  // ];
 
-  calculateData(countJsonData);
-
-  //4.打印计算得出的结果
-  function printData(dataset, prefix) {
-    for (let data of dataset) {
-      console.log(`${prefix} name=${data.name}, value=${data.value}`);
-      if (data.subData) {
-        printData(data.subData, prefix + '--');
-      }
-    }
-  }
+  // function calculateData(dataset) {
+  //   let totalValue = 0;
+  //   for (let data of dataset) {
+  //     if (data.subData) {
+  //       let subValue = calculateData(data.subData);
+  //       if (subValue > 0) {
+  //         data.value = subValue;
+  //       } else {
+  //         data.value = 0;
+  //       }
+  //     }
+  //     if (data.value === undefined) {
+  //       data.value = 0;
+  //     } else if (data.value > 0) {
+  //       totalValue += data.value;
+  //     }
+  //   }
+  //   return totalValue;
+  // }
+  // calculateData(countJsonData);
 
   // printData(totalData, '');
 
-  // 5.从传递进来的数据集里找到特定名称的数据并返回其subData
-  function getSeriesData(name, dataset) {
-    if (dataset === undefined) {
-      dataset = countJsonData;
-    }
-    var subResult;
-    for (let data of dataset) {
-      if (name === data.name) {
-        if (data.subData) {
-          return data.subData;
-        } else {
-          return [];
-        }
-      } else {//在二级目录查找
-        if (data.subData) {
-          subResult = getSeriesData(name, data.subData);
-          if (subResult) {
-            return subResult;
-          }
-        }
-      }
-    }
-    return null;
+  /**
+   * 返回当前地图下各区域数值
+   */
+  function getSeriesData(name) {
+	  let pointArray = [];
+	  let dataArray = totalJsonData[date]["patient"];
+	  if (mapName === xizang) {
+		  for (let dataCity in dataArray) {
+			  for (let district in dataArray[dataCity]) {
+				  if (district == dataCity)
+				  for (let point of dataArray[dataCity][district]) {
+					  pointArray.push(point)
+				  }
+			  }
+		  }
+	  } else {
+		  for (let dataCity in dataArray) {
+			  if (mapName === dataCity) {
+				  for (let district in dataArray[dataCity]) {
+					  for (let point of dataArray[dataCity][district]) {
+						  pointArray.push(point)
+					  }
+				  }
+			  }
+		  }
+	  }
+
+	  if (pointArray.length == 0) {
+		  console.log("查询到结果为0：当前mapName=", mapName, " type=", type)
+	  }
+	  console.log(date, mapName, type, "最终找到数据量：", pointArray.length,);
+	  //强制数据格式 {name: "测试数据", value: [91.134559, 29.661675]},
+	  let mapPointDataArray = [];
+	  for (const point of pointArray) {
+		  mapPointDataArray.push({name: point.address, value: [point.lng, point.lat, point.poi_name, point.poi_address]})
+	  }
+	  return mapPointDataArray;
   }
 
+  /**
+   * 返回打点数据集合
+   * type：red/yellow
+   */
   function getPointDataArray(type) {
     let pointArray = [];
-    let dataArray = pointJsonData[date][type];
+    let dataArray = totalJsonData[date][type];
     if (mapName === xizang) {
       for (let dataCity in dataArray) {
         for (let district in dataArray[dataCity]) {
@@ -540,7 +547,7 @@
 
   function initMap() {
     $.getJSON("asset/totalData.json", null, function (data) {
-      pointJsonData = data
+      totalJsonData = data
       loadMap();
       // console.log(pointJsonData)
     });
