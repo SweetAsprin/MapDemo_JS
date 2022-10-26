@@ -18,7 +18,7 @@
   var option;
   var xizang = "西藏"
   var mapName = xizang
-  var date = "8-20"
+  var date = "8-18"
 
   //1.准备地图/图片资源
   var RED_ICON = "image://asset/point_black.png";
@@ -38,187 +38,46 @@
   var YELLOW = "yellow";
   var totalJsonData = {};
 
-  // function getRandomValue(mapName) {
-  //   return Math.floor(Math.random() * 100 + 1);
-  // }
-
-  // var countJsonData = [
-  //   {
-  //     name: '西藏',
-  //     subData: [
-  //       {
-  //         name: '拉萨市',
-  //         subData: [
-  //           {name: '城关区', value: getRandomValue(name)},
-  //           {name: '当雄县', value: getRandomValue(name)},
-  //           {name: '林周县', value: getRandomValue(name)},
-  //           {name: '墨竹工卡县', value: getRandomValue(name)},
-  //           {name: '堆龙德庆区', value: getRandomValue(name)},
-  //           {name: '尼木县', value: getRandomValue(name)},
-  //           {name: '达孜区', value: getRandomValue(name)},
-  //           {name: '曲水县', value: getRandomValue(name)},
-  //         ]
-  //       },
-  //       {
-  //         name: '林芝市',
-  //         subData: [
-  //           {name: '波密县', value: getRandomValue(name)},
-  //           {name: '工布江达县', value: getRandomValue(name)},
-  //           {name: '巴宜区', value: getRandomValue(name)},
-  //           {name: '米林县', value: getRandomValue(name)},
-  //           {name: '墨脱县', value: getRandomValue(name)},
-  //           {name: '朗县', value: getRandomValue(name)},
-  //           {name: '察隅县', value: getRandomValue(name)},
-  //         ]
-  //       },
-  //       {
-  //         name: '山南市',
-  //         subData: [
-  //           {name: '桑日县', value: getRandomValue(name)},
-  //           {name: '加查县', value: getRandomValue(name)},
-  //           {name: '乃东区', value: getRandomValue(name)},
-  //           {name: '扎囊县', value: getRandomValue(name)},
-  //           {name: '贡嘎县', value: getRandomValue(name)},
-  //           {name: '浪卡子县', value: getRandomValue(name)},
-  //           {name: '曲松县', value: getRandomValue(name)},
-  //           {name: '琼结县', value: getRandomValue(name)},
-  //           {name: '措美县', value: getRandomValue(name)},
-  //           {name: '隆子县', value: getRandomValue(name)},
-  //           {name: '洛扎县', value: getRandomValue(name)},
-  //           {name: '错那县', value: getRandomValue(name)},
-  //         ]
-  //       },
-  //       {
-  //         name: '阿里地区',
-  //         subData: [
-  //           {name: '改则县', value: getRandomValue(name)},
-  //           {name: '札达县', value: getRandomValue(name)},
-  //           {name: '措勤县', value: getRandomValue(name)},
-  //           {name: '普兰县', value: getRandomValue(name)},
-  //           {name: '日土县', value: getRandomValue(name)},
-  //           {name: '噶尔县', value: getRandomValue(name)},
-  //           {name: '革吉县', value: getRandomValue(name)},
-  //         ]
-  //       },
-  //       {
-  //         name: '那曲市',
-  //         subData: [
-  //           {name: '安多县', value: getRandomValue(name)},
-  //           {name: '聂荣县', value: getRandomValue(name)},
-  //           {name: '巴青县', value: getRandomValue(name)},
-  //           {name: '申扎县', value: getRandomValue(name)},
-  //           {name: '班戈县', value: getRandomValue(name)},
-  //           {name: '索县', value: getRandomValue(name)},
-  //           {name: '比如县', value: getRandomValue(name)},
-  //           {name: '色尼区', value: getRandomValue(name)},
-  //           {name: '嘉黎县', value: getRandomValue(name)},
-  //           {name: '尼玛县', value: getRandomValue(name)},
-  //           {name: '双湖县', value: getRandomValue(name)},
-  //         ]
-  //       },
-  //       {
-  //         name: '日喀则市',
-  //         subData: [
-  //           {name: '仲巴县', value: 199.3},
-  //           {name: '昂仁县', value: 76.1},
-  //           {name: '谢通门县', value: 26.2},
-  //           {name: '南木林县', value: 26.2},
-  //           {name: '萨嘎县', value: 26.2},
-  //           {name: '桑珠孜区', value: 26.2},
-  //           {name: '拉孜县', value: 26.2},
-  //           {name: '仁布县', value: 26.2},
-  //           {name: '萨迦县', value: 26.2},
-  //           {name: '吉隆县', value: 26.2},
-  //           {name: '白朗县', value: 26.2},
-  //           {name: '江孜县', value: 26.2},
-  //           {name: '聂拉木县', value: 26.2},
-  //           {name: '定日县', value: 26.2},
-  //           {name: '康马县', value: 26.2},
-  //           {name: '岗巴县', value: 26.2},
-  //           {name: '定结县', value: 26.2},
-  //           {name: '亚东县', value: 26.2},
-  //         ]
-  //       },
-  //       {
-  //         name: '昌都市',
-  //         subData: [
-  //           {name: '江达县', value: 199.3},
-  //           {name: '丁青县', value: 76.1},
-  //           {name: '卡若区', value: 26.2},
-  //           {name: '类乌齐县', value: 26.2},
-  //           {name: '边坝县', value: 26.2},
-  //           {name: '贡觉县', value: 26.2},
-  //           {name: '洛隆县', value: 26.2},
-  //           {name: '察雅县', value: 26.2},
-  //           {name: '八宿县', value: 26.2},
-  //           {name: '左贡县', value: 26.2},
-  //           {name: '芒康县', value: 26.2},
-  //         ]
-  //       },
-  //     ],
-  //   },
-  // ];
-
-  // function calculateData(dataset) {
-  //   let totalValue = 0;
-  //   for (let data of dataset) {
-  //     if (data.subData) {
-  //       let subValue = calculateData(data.subData);
-  //       if (subValue > 0) {
-  //         data.value = subValue;
-  //       } else {
-  //         data.value = 0;
-  //       }
-  //     }
-  //     if (data.value === undefined) {
-  //       data.value = 0;
-  //     } else if (data.value > 0) {
-  //       totalValue += data.value;
-  //     }
-  //   }
-  //   return totalValue;
-  // }
-  // calculateData(countJsonData);
-
-  // printData(totalData, '');
-
   /**
    * 返回当前地图下各区域数值
    */
-  function getSeriesData(name) {
-	  let pointArray = [];
-	  let dataArray = totalJsonData[date]["patient"];
-	  if (mapName === xizang) {
-		  for (let dataCity in dataArray) {
-			  for (let district in dataArray[dataCity]) {
-				  if (district == dataCity)
-				  for (let point of dataArray[dataCity][district]) {
-					  pointArray.push(point)
-				  }
-			  }
-		  }
-	  } else {
-		  for (let dataCity in dataArray) {
-			  if (mapName === dataCity) {
-				  for (let district in dataArray[dataCity]) {
-					  for (let point of dataArray[dataCity][district]) {
-						  pointArray.push(point)
-					  }
-				  }
-			  }
-		  }
-	  }
+  function getSeriesData() {
+    let pointArray = [];
+    let dataArray = totalJsonData[date]["patient"];
+    if (mapName === xizang) {
+      for (let dataCity in dataArray) {
+        for (let district in dataArray[dataCity]) {
+          if (district === dataCity) {
+            pointArray.push(dataArray[dataCity][district])
+          }
+        }
+      }
+    } else {
+      for (let dataCity in dataArray) {
+        if (mapName === dataCity) {
+          for (let district in dataArray[dataCity]) {
+            if (district !== dataCity) {
+              pointArray.push(dataArray[dataCity][district])
+            }
+          }
+        }
+      }
+    }
 
-	  if (pointArray.length == 0) {
-		  console.log("查询到结果为0：当前mapName=", mapName, " type=", type)
-	  }
-	  console.log(date, mapName, type, "最终找到数据量：", pointArray.length,);
-	  //强制数据格式 {name: "测试数据", value: [91.134559, 29.661675]},
-	  let mapPointDataArray = [];
-	  for (const point of pointArray) {
-		  mapPointDataArray.push({name: point.address, value: [point.lng, point.lat, point.poi_name, point.poi_address]})
-	  }
-	  return mapPointDataArray;
+    if (pointArray.length == 0) {
+      console.log("查询到结果为0：当前mapName=", mapName)
+    }
+    // console.log(date, mapName, "最终找到数据量：", pointArray.length, pointArray);
+    //强制数据格式 {name: "测试数据", value: [91.134559, 29.661675]},
+    let mapPointDataArray = [];
+    for (const point of pointArray) {
+      mapPointDataArray.push({
+        name: point.district,
+        // 此处由于visualMap读取数据时会默认取最后一个值，所以将用来显示颜色深度的值放到最后
+        value: [point.certain, point.uncertain, point.total, point.total_certain, point.total_uncertain, point.count,]
+      })
+    }
+    return mapPointDataArray;
   }
 
   /**
@@ -251,7 +110,7 @@
     if (pointArray.length == 0) {
       console.log("查询到结果为0：当前mapName=", mapName, " type=", type)
     }
-    console.log(date, mapName, type, "最终找到数据量：", pointArray.length,);
+    // console.log(date, mapName, type, "最终找到数据量：", pointArray.length,);
     //强制数据格式 {name: "测试数据", value: [91.134559, 29.661675]},
     let mapPointDataArray = [];
     for (const point of pointArray) {
@@ -262,33 +121,40 @@
 
 
   function loadMap() {
-    dataSplited = date.split("-")
+    var dataSplited = date.split("-")
     map_title = '各地区新增病例数量及中高风险区统计(' + dataSplited[0] + "月" + dataSplited[1] + "日)"
     console.log(`loadMap: ${mapName}`);
-    var seriesData = getSeriesData(mapName);
-    var jsonData = jsonMapData[mapName];
+    let seriesData = getSeriesData(mapName);
+    let mapJson = jsonMapData[mapName];
 
     let minValue = 0;
     let maxValue = -1;
     if (seriesData) {
       for (let data of seriesData) {
         if (data.value !== undefined) {
-          if (data.value < minValue) {
-            minValue = data.value;
+          if (data.value[5] < minValue) {
+            minValue = data.value[5];
           }
-          if (data.value > maxValue) {
-            maxValue = data.value;
+          if (data.value[5] > maxValue) {
+            maxValue = data.value[5];
           }
         }
       }
     }
-    if (jsonData === undefined) {
+    if (maxValue === 0) {
+      maxValue = 10;
+    } else {
+      maxValue = 1.2 * maxValue
+    }
+    console.log("seriesData:", seriesData)
+    console.log("maxValue:", maxValue)
+    if (mapJson === undefined) {
       console.log("找不到地图数据 for ", mapName)
       return;
     }
 
     myChart.showLoading(); // 显示加载动画
-    $.getJSON(jsonData, null, function (data) {
+    $.getJSON(mapJson, null, function (data) {
       echarts.registerMap(mapName, data);
       myChart.hideLoading();
       //地图具体样式
@@ -298,13 +164,21 @@
         tooltip: {
           trigger: 'item',
           formatter: function (params) {
-            // console.log("option.tooltip.formatter： name=",params.name);
-            if (typeof params.value[1] == 'undefined') {
-              return  params.name + ' : ' + params.value.toFixed(0) + "例";
-            } else {
+            // console.log("option.tooltip.formatter： params=",params);
+            if (params.data.value.length == 6) {//地图颜色对应数据
+              let splited = date.split("-")
+              return splited[0] + "月" + splited[1] + "日 " + params.name + ' : ' + "</br>"
+                + "新增感染者 " + params.data.value[5] + " 例" + "</br>"
+                + "(其中 确诊 " + params.data.value[0] + " 例"
+                + " 无症状 " + params.data.value[1] + " 例)" + "</br>"
+                + "截止当日累计感染 " + params.data.value[2] + " 例" + "</br>"
+                + "(其中 确诊 " + params.data.value[3] + " 例"
+                + " 无症状 " + params.data.value[4] + " 例)" + "</br>"
+                ;
+            } else {//坐标点位数据
               //"</br>"
               return "登记风险区名称：" + params.name + "</br>" + "poi点位名称：" + params.value[2] + "</br>" + "poi点位地址：" + params.value[3]
-                + "</br>" + "经度：" + params.value[0] + "</br>" +"纬度：" + params.value[1];
+                + "</br>" + "经度：" + params.value[0] + "</br>" + "纬度：" + params.value[1];
             }
           },
         },
@@ -344,15 +218,15 @@
         visualMap: [
           {
             min: minValue,
-            max: maxValue * 1.5,
+            max: maxValue,
             seriesIndex: 0,
             show: true,
             inRange: {
               color: ["#FFFFFF", "#FFECEC", "#FFD2D2", "#FFB5B5", "#FF9797", "#ff7575", "#FF5151", "#FF2D2D", "#FF0000", "#EA0000", "#CE0000", "#AE0000", "#930000", "#750000", "#600000", "#4D0000", "#2F0000",],
             },
             formatter: function (value) {
+              // console.log("visualMap:formatter: ",value)
               return value.toFixed(0);
-//            return "";    左下角图例滑过时显示空值
             },
           },
         ],
@@ -364,13 +238,16 @@
             normal: {
               show: true, //是否显示城市名
               textStyle: {
-                color: '#006400', //非选中状态地图名称颜色
-                fontSize: 10,
+                color: '#FFA500', //非选中状态地图名称颜色
+                fontSize: 12,
               },
               verticalAlign: 'middle',
               align: 'left',
               formatter: function (params) {
-                return params.name + "\n(" + seriesData.filter((value => value.name === params.name))[0].value.toFixed(0) + "例)";
+                data = seriesData.filter((value) => {
+                  return value.name === params.name;
+                })[0].value;
+                return params.name + "\n(当日新增:" + data[5] + "例)";
               },
             },
             emphasis: {
@@ -520,8 +397,8 @@
       };
       myChart.clear();
       myChart.setOption(option);
-      myChart.on("mouseover", function (params){
-        if(params.data.value != undefined){
+      myChart.on("mouseover", function (params) {
+        if (params.data.value != undefined) {
           myChart.dispatchAction({
             type: 'downplay'
           });
